@@ -15,7 +15,7 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('list_id');
+            $table->unsignedBigInteger('shopping_list_id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedBigInteger('user_id')->comment('originator');
@@ -24,7 +24,7 @@ class CreateItemsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('list_id')->references('id')->on('lists')->onDelete('cascade');
+            $table->foreign('shopping_list_id')->references('id')->on('shopping_lists')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

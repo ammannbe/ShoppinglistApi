@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateListsTable extends Migration
+class CreateShoppingListUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('lists', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('shopping_list_user', function (Blueprint $table) {
+            $table->unsignedBigInteger('shopping_list_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->timestamps();
-            $table->softDeletes();
 
+            $table->foreign('shopping_list_id')->references('id')->on('shopping_lists')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -31,6 +29,6 @@ class CreateListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lists');
+        Schema::dropIfExists('list_user');
     }
 }
