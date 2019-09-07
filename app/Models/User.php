@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -18,7 +19,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'email', 'password',
+        'email',
+        'password',
     ];
 
     /**
@@ -27,7 +29,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'pivot',
+        'deleted_at'
     ];
 
     /**
@@ -36,6 +40,18 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $casts = [
+        'email' => 'string',
         'email_verified_at' => 'datetime',
+        'password' => 'string',
     ];
+
+    /**
+     * Get the shopping lists corresponding to this user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function shoppingLists(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Models\ShoppingList');
+    }
 }

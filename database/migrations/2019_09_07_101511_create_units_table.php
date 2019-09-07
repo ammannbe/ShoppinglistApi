@@ -15,7 +15,6 @@ class CreateUnitsTable extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->nullable()->comment('global if null');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();

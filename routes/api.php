@@ -22,6 +22,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['prefix' => 'register'], function () {
         Route::post('', 'Auth\RegisterController@register')->name('register');
         Route::post('resend', 'Auth\VerificationController@resend')->name('verification.resend');
+        Route::get('verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
     });
 
     Route::group(['prefix' => 'password'], function () {
@@ -30,4 +31,12 @@ Route::group(['prefix' => 'auth'], function () {
     });
 
     Route::post('logout', 'Auth\LoginController@logout');
+});
+
+Route::middleware('auth:api')->group(function () {
+    Route::apiResource('shopping-lists', 'ShoppingListController');
+    Route::apiResource('shopping-lists/{shopping_list}/user', 'ShoppingListUserController')->only(['index', 'store', 'destroy']);
+    Route::apiResource('items', 'ItemController');
+    Route::apiResource('products', 'ProductController');
+    Route::apiResource('units', 'UnitController')->only(['index']);
 });

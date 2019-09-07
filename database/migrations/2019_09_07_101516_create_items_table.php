@@ -20,7 +20,7 @@ class CreateItemsTable extends Migration
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedBigInteger('user_id')->comment('originator');
             $table->unsignedInteger('amount')->nullable();
-            $table->boolean('done');
+            $table->boolean('done')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

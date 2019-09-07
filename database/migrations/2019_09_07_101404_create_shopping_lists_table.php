@@ -20,6 +20,7 @@ class CreateShoppingListsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->unique(['user_id', 'name']);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
