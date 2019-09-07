@@ -57,8 +57,8 @@ php artisan view:cache
 
 ## Built With
 
-* [laravel/laravel](https://github.com/laravel/laravel) - A PHP framework for web artisans
-* [Askedio/laravel-soft-cascade](https://github.com/Askedio/laravel-soft-cascade) - Cascade Delete & Restore when using Laravel SoftDeletes
+* [laravel/laravel](https://github.com/laravel/laravel) - A PHP framework for web artisans.
+* [laravel/telescope](https://github.com/laravel/telescope) - Laravel Telescope is an elegant debug assistant for the Laravel framework.
 
 ## Authors
 
