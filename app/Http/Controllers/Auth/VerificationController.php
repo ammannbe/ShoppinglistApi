@@ -64,4 +64,19 @@ class VerificationController extends Controller
             return response()->view('auth.register.verify-failed', [], 400);
         }
     }
+
+    /**
+     * Check if email is verified or not
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function status(Request $request)
+    {
+        $verified = false;
+        if ($request->user()->hasVerifiedEmail()) {
+            $verified = true;
+        }
+        return response(['verified' => $verified]);
+    }
 }
