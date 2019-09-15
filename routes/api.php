@@ -36,8 +36,11 @@ Route::group(['prefix' => 'auth'], function () {
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('shopping-lists', 'ShoppingListController');
     Route::get('shopping-lists/{shopping_list}/items', 'ShoppingListController@items');
-    Route::apiResource('shopping-lists/{shopping_list}/user', 'ShoppingListUserController')->only(['index', 'store', 'destroy']);
+    Route::apiResource('shopping-lists/{shopping_list}/users', 'ShoppingListUserController')->only(['index', 'store', 'destroy']);
     Route::apiResource('items', 'ItemController')->only(['store', 'show', 'update', 'destroy']);
     Route::apiResource('products', 'ProductController');
     Route::apiResource('units', 'UnitController')->only(['index']);
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('', 'UserController@show')->name('user.show');
+    });
 });
