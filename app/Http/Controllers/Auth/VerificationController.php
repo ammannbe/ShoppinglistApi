@@ -86,4 +86,22 @@ class VerificationController extends Controller
         }
         return response(['verified' => $verified]);
     }
+
+    /**
+     * Resend the email verification notification.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function resend(Request $request)
+    {
+        if (auth()->user()->hasVerifiedEmail()) {
+            return response(['message' => 'Die E-Mail Adresse ist bereits verifiziert'], 422);
+        }
+
+        auth()->user()->sendEmailVerificationNotification();
+
+        return response(['message' => 'Die Verifizierungs E-Mail wurde erneut versendet.']);
+    }
+
 }

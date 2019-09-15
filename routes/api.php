@@ -22,7 +22,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['prefix' => 'register'], function () {
         Route::post('', 'Auth\RegisterController@register')->name('register');
         Route::get('status', 'Auth\VerificationController@status')->name('verification.status')->middleware('auth:api');
-        Route::post('resend', 'Auth\VerificationController@resend')->name('verification.resend');
+        Route::post('resend', 'Auth\VerificationController@resend')->name('verification.resend')->middleware('auth:api');
         Route::get('verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
     });
 
