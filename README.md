@@ -29,7 +29,7 @@ git clone https://git.narrenhaus.ch/Narrenhaus/ShoppingListApi.git
 - Copy .env.example to .env and modify it to your needs
 - Generate an app key `php artisan key:generate`
 - Migrate the database `php artisan migrate`
-- Configure passport `php artisan passport:client --personal --name="GiveAdvice Personal Access Client"`
+- Configure passport `php artisan passport:client --personal --name="ShoppingList Personal Access Client"`
 - Install composer dependencies `composer install`
 - Add following to your crontab:
 ```
