@@ -41,10 +41,17 @@ class VerificationController extends Controller
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
-    public function verify(Request $request, int $id)
+    /**
+     * Verify the email address
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function verify(Request $request, int $userId)
     {
         try {
-            $user = User::findOrFail($id);
+            $user = User::findOrFail($userId);
 
             if (! hash_equals((string) $request->hash, sha1($user->getEmailForVerification()))) {
                 throw new \Exception('Hash does not match.');
