@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ShoppingList extends Model
 {
-    use SoftDeletes;
-
     /**
      * The attributes that are mass assignable.
      *

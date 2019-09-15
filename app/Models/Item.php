@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Item extends Model
 {
-    use SoftDeletes;
-
     /**
      * The attributes that are mass assignable.
      *

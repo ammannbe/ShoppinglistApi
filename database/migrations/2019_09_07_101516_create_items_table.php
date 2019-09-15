@@ -22,7 +22,6 @@ class CreateItemsTable extends Migration
             $table->unsignedInteger('amount')->nullable();
             $table->boolean('done')->default(0);
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('shopping_list_id')->references('id')->on('shopping_lists')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

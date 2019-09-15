@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Unit extends Model
 {
-    use SoftDeletes;
-
     /**
      * The attributes that should be hidden for arrays.
      *

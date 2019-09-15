@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable()->comment('global if null');
             $table->string('name');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->unique(['user_id', 'name']);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
