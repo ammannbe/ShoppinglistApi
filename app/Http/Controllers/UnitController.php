@@ -13,6 +13,6 @@ class UnitController extends Controller
      */
     public function index()
     {
-        return response(['data' => Unit::get()]);
+        return response(Unit::get());
     }
 }

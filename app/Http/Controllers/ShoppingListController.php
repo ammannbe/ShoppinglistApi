@@ -19,7 +19,7 @@ class ShoppingListController extends Controller
     public function index()
     {
         $this->authorize(ShoppingList::class);
-        return response(['data' => auth()->user()->shoppingLists]);
+        return response(auth()->user()->shoppingLists);
     }
 
     /**
@@ -50,10 +50,7 @@ class ShoppingListController extends Controller
     public function show(ShoppingList $shoppingList)
     {
         $this->authorize($shoppingList);
-        return response(['data' => [
-            'shopping-list' => $shoppingList,
-            'items'         => $shoppingList->items,
-        ]]);
+        return response($shoppingList->format());
     }
 
     /**
@@ -85,5 +82,20 @@ class ShoppingListController extends Controller
     {
         $this->authorize($shoppingList);
         $shoppingList->delete();
+    }
+
+    /**
+     * Display all items of the specified resource.
+     *
+     * @param  \App\Models\ShoppingList  $shoppingList
+     * @return \Illuminate\Http\Response
+     */
+    public function items(ShoppingList $shoppingList)
+    {
+        $this->authorize('view', $shoppingList);
+        $items = $shoppingList->items->map(function ($item) {
+            return $item->format();
+        });
+        return response($items);
     }
 }

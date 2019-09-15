@@ -65,12 +65,12 @@ class LoginController extends Controller
             $data = [
                 'token'      => $tokenResult->accessToken,
                 'expires_at' => $tokenResult->token->expires_at,
-                'now'        => Carbon::now(),
+                'issued_at'  => Carbon::now(),
             ];
 
-            return response(['data' => $data], 200);
+            return response($data, 200);
         } else {
-            return response(['message' => 'Benutzername und/oder Passwort ist ungültig.'], 401);
+            return response('Benutzername und/oder Passwort ist ungültig.', 401);
         }
     }
 
@@ -99,7 +99,7 @@ class LoginController extends Controller
             'expires_at' => $tokenResult->token->expires_at,
         ];
 
-        return response(['data' => $data], 200);
+        return response($data, 200);
     }
 
     /**

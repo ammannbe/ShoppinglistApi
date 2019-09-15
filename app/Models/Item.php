@@ -53,4 +53,32 @@ class Item extends Model
     {
         return $this->belongsTo('App\Models\ShoppingList');
     }
+
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Product');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo('App\Models\Unit');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function format()
+    {
+        return [
+            'id' => $this->id,
+            'shopping_list_id' => $this->shopping_list_id,
+            'product' => $this->product,
+            'unit' => $this->unit,
+            'user' => $this->user,
+            'amount' => $this->amount,
+            'done' => $this->done,
+        ];
+    }
 }

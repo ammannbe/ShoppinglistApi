@@ -70,4 +70,15 @@ class ShoppingList extends Model
     {
         return $this->hasMany('App\Models\Item');
     }
+
+    public function format()
+    {
+        return [
+            'id' => $this->id,
+            'user' => $this->user,
+            'name' => $this->name,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
 }

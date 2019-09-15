@@ -28,7 +28,7 @@ class ItemController extends Controller
             'amount',
             'done',
         ]));
-        return response(['data' => $item]);
+        return response($item->format());
     }
 
     /**
@@ -40,7 +40,7 @@ class ItemController extends Controller
     public function show(Item $item)
     {
         $this->authorize($item);
-        return response(['data' => $item]);
+        return response($item->format());
     }
 
     /**

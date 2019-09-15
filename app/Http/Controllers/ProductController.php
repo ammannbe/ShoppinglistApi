@@ -17,7 +17,7 @@ class ProductController extends Controller
     {
         $this->authorize(Product::class);
         $products = Product::global()->orWhere('user_id', auth()->user()->id)->get();
-        return response(['data' => $products]);
+        return response($products);
     }
 
     /**
@@ -32,7 +32,7 @@ class ProductController extends Controller
         $product = Product::create($request->only([
             'name',
         ]));
-        return response(['data' => $product]);
+        return response($product);
     }
 
     /**
@@ -44,7 +44,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $this->authorize($product);
-        return response(['data' => $product]);
+        return response($product);
     }
 
     /**
