@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4868d76447a1ea32e5ff7d105572bda9",
+    "content-hash": "58e0c8a0e86f54f5efbad4e90a814a06",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -119,6 +119,49 @@
                 "laravel"
             ],
             "time": "2019-08-28T11:27:11+00:00"
+        },
+        {
+            "name": "caouecs/laravel-lang",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caouecs/Laravel-lang.git",
+                "reference": "884265ed667ddf826d8df495ea6b2bb3330be79c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/caouecs/Laravel-lang/zipball/884265ed667ddf826d8df495ea6b2bb3330be79c",
+                "reference": "884265ed667ddf826d8df495ea6b2bb3330be79c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.10"
+            },
+            "suggest": {
+                "ablunier/laravel-lang-installer": "Command for easily add languages to a Laravel project",
+                "andrey-helldar/laravel-lang-publisher": "Easy installation and update of translation files for your project",
+                "arcanedev/laravel-lang": "Translations manager and checker for Laravel 5",
+                "overtrue/laravel-lang": "Command to add languages in your project"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "caouecs",
+                    "email": "caouecs@caouecs.net"
+                }
+            ],
+            "description": "Languages for Laravel",
+            "keywords": [
+                "lang",
+                "languages",
+                "laravel",
+                "lpm"
+            ],
+            "time": "2019-08-22T19:36:14+00:00"
         },
         {
             "name": "defuse/php-encryption",

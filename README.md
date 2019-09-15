@@ -57,9 +57,11 @@ php artisan view:cache
 
 ## Built With
 
+* [barryvdh/laravel-cors](https://github.com/barryvdh/laravel-cors) - Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application
 * [laravel/laravel](https://github.com/laravel/laravel) - A PHP framework for web artisans.
 * [laravel/telescope](https://github.com/laravel/telescope) - Laravel Telescope is an elegant debug assistant for the Laravel framework.
-* [barryvdh/laravel-cors](https://github.com/barryvdh/laravel-cors) - Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application
+* [caouecs/laravel-lang](https://github.com/caouecs/Laravel-lang) - List of 73 languages for Laravel 5
+
 ## Authors
 
 * **Benjamin Ammann** - *Initial work* - [ammannbe](https://github.com/ammannbe)
