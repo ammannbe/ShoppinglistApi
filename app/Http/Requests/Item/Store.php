@@ -27,7 +27,7 @@ class Store extends FormRequest
             'shopping_list_id' => ['required', 'integer', 'exists:shopping_lists,id'],
             'product_id'       => ['required', 'integer', 'exists:products,id'],
             'unit_id'          => ['nullable', 'integer', 'exists:units,id'],
-            'amount'           => ['required', 'integer'],
+            'amount'           => ['integer'],
             'done'             => ['required', 'boolean'],
         ];
     }
