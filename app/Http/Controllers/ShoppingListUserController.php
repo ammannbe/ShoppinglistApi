@@ -30,7 +30,7 @@ class ShoppingListUserController extends Controller
     public function store(UserStore $request, ShoppingList $shoppingList)
     {
         $this->authorize($shoppingList);
-        $user = User::whereEmail($request->only(['email']))->first();
+        $user = User::whereEmail($request->only(['email']))->firstOrFail();
         $shoppingList->users()->syncWithoutDetaching([$user->id]);
     }
 

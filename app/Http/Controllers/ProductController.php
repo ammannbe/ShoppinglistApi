@@ -29,6 +29,9 @@ class ProductController extends Controller
     public function store(Store $request)
     {
         $this->authorize(Product::class);
+        if (Product::whereUserId(auth()->user()->id)->whereName($request->name)->exists()) {
+            return response(['errors' => ['name' => ['Name existiert beretis']]], 409);
+        }
         $product = Product::create($request->only([
             'name',
         ]));
