@@ -33,7 +33,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
 });
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::apiResource('shopping-lists', 'ShoppingListController');
     Route::get('shopping-lists/{shopping_list}/items', 'ShoppingListController@items');
     Route::apiResource('shopping-lists/{shopping_list}/users', 'ShoppingListUserController')->only(['index', 'store', 'destroy']);
