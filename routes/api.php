@@ -13,6 +13,24 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('im-a-teapot', function () {
+    $teapot = <<<EOF
+                       (
+            _           ) )
+         _,(_)._        ((      I'm a little teapot
+    ___,(_______).        )       short and stout
+  ,'__.   /       \    /\_        here is my handle
+ /,' /  |""|       \  /  /        here is my spout
+| | |   |__|       |,'  /         when I get all steamed up
+ \`.|                  /          hear me shout
+  `. :           :    /           "tip me over and pout me out!"
+    `.            :.,'
+      `-.________,-'            - Benji
+EOF;
+
+    return response($teapot, 418);
+});
+
 Route::group(['prefix' => 'auth'], function () {
     Route::group(['prefix' => 'login'], function () {
         Route::post('refresh', 'Auth\LoginController@refresh')->name('login.refresh')->middleware('auth:api');
