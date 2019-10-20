@@ -22,19 +22,19 @@ Route::get('im-a-teapot', function () {
   ,'__.   /       \    /\_        here is my handle
  /,' /  |""|       \  /  /        here is my spout
 | | |   |__|       |,'  /         when I get all steamed up
- \`.|                  /          hear me shout
-  `. :           :    /           "tip me over and pout me out!"
+ \`.|                  /          hear me shout:
+  `. :           :    /           "tip me over and pour me out!"
     `.            :.,'
       `-.________,-'            - Benji
 EOF;
 
     return response($teapot, 418);
-});
+})->name('im-a-teapot');
 
 Route::group(['prefix' => 'auth'], function () {
     Route::group(['prefix' => 'login'], function () {
-        Route::post('refresh', 'Auth\LoginController@refresh')->name('login.refresh')->middleware('auth:api');
-        Route::post('', 'Auth\LoginController@login')->name('login');
+        Route::post('refresh', 'Auth\LoginController@refresh')->name('auth.refresh')->middleware('auth:api');
+        Route::post('', 'Auth\LoginController@login')->name('auth.login');
     });
 
     Route::group(['prefix' => 'register'], function () {
@@ -49,17 +49,16 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('reset', 'Auth\ResetPasswordController@reset')->name('password.reset');
     });
 
-    Route::post('logout', 'Auth\LoginController@logout');
+    Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout');
 });
 
 Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::apiResource('shopping-lists', 'ShoppingListController');
-    Route::get('shopping-lists/{shopping_list}/items', 'ShoppingListController@items');
-    Route::apiResource('shopping-lists/{shopping_list}/users', 'ShoppingListUserController')->only(['index', 'store', 'destroy']);
-    Route::apiResource('items', 'ItemController')->only(['store', 'show', 'update', 'destroy']);
-    Route::apiResource('products', 'ProductController');
+    Route::apiResource('shopping-lists/{shopping_list}/items', 'ItemController')->only(['index', 'store']);
+    Route::apiResource('shopping-lists/{shopping_list}/shares', 'ShoppingListUserController')->only(['index', 'store', 'destroy']);
+    Route::apiResource('items', 'ItemController')->except(['index', 'store']);
+    Route::apiResource('products', 'ProductController')->parameters(['products' => 'product_name']);
     Route::apiResource('units', 'UnitController')->only(['index']);
-    Route::group(['prefix' => 'user'], function () {
-        Route::get('', 'UserController@show')->name('user.show');
-    });
+    Route::patch('user', 'UserController@update')->name('user.update');
+    Route::get('user', 'UserController@show')->name('user.show');
 });

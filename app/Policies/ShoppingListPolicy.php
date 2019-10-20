@@ -11,7 +11,7 @@ class ShoppingListPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any items.
+     * Determine whether the user can view any shopping lists.
      *
      * @param  \App\Models\User  $user
      * @return mixed
@@ -30,7 +30,18 @@ class ShoppingListPolicy
      */
     public function view(User $user, ShoppingList $shoppingList)
     {
-        return (bool) $shoppingList->users()->find($user->id);
+        return (bool) $user->shoppingLists()->find($shoppingList->id);
+    }
+
+    /**
+     * Determine whether the user can view the shopping list shares.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function viewShares(User $user, ShoppingList $shoppingList)
+    {
+        return $user->isOwnerOf($shoppingList);
     }
 
     /**
@@ -45,6 +56,17 @@ class ShoppingListPolicy
     }
 
     /**
+     * Determine whether the user can create shopping list shares.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function createShares(User $user, ShoppingList $shoppingList)
+    {
+        return $user->isOwnerOf($shoppingList);
+    }
+
+    /**
      * Determine whether the user can update the shopping list.
      *
      * @param  \App\Models\User  $user
@@ -53,7 +75,7 @@ class ShoppingListPolicy
      */
     public function update(User $user, ShoppingList $shoppingList)
     {
-        return (bool) $shoppingList->users()->find($user->id);
+        return (bool) $user->shoppingLists()->find($shoppingList->id);
     }
 
     /**
@@ -65,7 +87,19 @@ class ShoppingListPolicy
      */
     public function delete(User $user, ShoppingList $shoppingList)
     {
-        return ($user->id === $shoppingList->user_id);
+        return $user->isOwnerOf($shoppingList);
+    }
+
+    /**
+     * Determine whether the user can delete the shopping list shares.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\ShoppingList  $shoppingList
+     * @return mixed
+     */
+    public function deleteShares(User $user, ShoppingList $shoppingList)
+    {
+        return $user->isOwnerOf($shoppingList);
     }
 
     /**
@@ -77,7 +111,7 @@ class ShoppingListPolicy
      */
     public function restore(User $user, ShoppingList $shoppingList)
     {
-        return ($user->id === $shoppingList->user_id);
+        return $user->isOwnerOf($shoppingList);
     }
 
     /**
@@ -89,6 +123,18 @@ class ShoppingListPolicy
      */
     public function forceDelete(User $user, ShoppingList $shoppingList)
     {
-        return ($user->id === $shoppingList->user_id);
+        return $user->isOwnerOf($shoppingList);
+    }
+
+    /**
+     * Determine whether the user can permanently delete the shopping list shares.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\ShoppingList  $shoppingList
+     * @return mixed
+     */
+    public function forceDeleteShares(User $user, ShoppingList $shoppingList)
+    {
+        return $user->isOwnerOf($shoppingList);
     }
 }

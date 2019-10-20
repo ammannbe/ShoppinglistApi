@@ -15,12 +15,12 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->nullable()->comment('global if null');
             $table->string('name');
+            $table->string('owner_email')->nullable();
             $table->timestamps();
 
-            $table->unique(['user_id', 'name']);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unique(['name', 'owner_email']);
+            $table->foreign('owner_email')->references('email')->on('users')->onDelete('cascade');
         });
     }
 

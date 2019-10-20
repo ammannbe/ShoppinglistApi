@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
@@ -14,16 +13,20 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
+        'user_email',
         'name',
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be visible in arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'deleted_at',
+    protected $visible = [
+        'name',
+        'is_public',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -32,19 +35,41 @@ class Product extends Model
      * @var array
      */
     protected $casts = [
+        'user_email' => 'string',
         'name' => 'string',
+        'is_public' => 'boolean',
     ];
 
     /**
-     * Get all global products.
+     * The accessors to append to the model's array form.
      *
-     * A product is "global" when the user_id is null.
+     * @var array
+     */
+    protected $appends = [
+        'is_public',
+    ];
+
+    /**
+     * The resource is public (no user owns it).
+     */
+    public function getIsPublicAttribute()
+    {
+        return $this->attributes['owner_email'] === null;
+    }
+
+    /**
+     * QueryFilter for personal or public resources.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeGlobal($query): Builder
+    public function scopePersonalOrPublic(Builder $query, User $user): Builder
     {
-        return $query->whereNull('user_id');
+        $email = $user->email;
+        return $query->where(function ($q) use ($email) {
+            $q->where('owner_email', $email);
+            $q->orWhere('owner_email', null);
+        });
     }
 }

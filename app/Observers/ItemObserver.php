@@ -14,6 +14,6 @@ class ItemObserver
      */
     public function creating(Item $item)
     {
-        $item->user_id = auth()->user()->id;
+        $item->creator_email = auth()->user()->email;
     }
 }

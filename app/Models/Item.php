@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Item extends Model
@@ -14,22 +13,29 @@ class Item extends Model
      * @var array
      */
     protected $fillable = [
+        'owner_email',
         'shopping_list_id',
-        'product_id',
-        'unit_id',
-        'user_id',
+        'product_name',
+        'unit_name',
+        'creator_email',
         'amount',
         'done',
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be visible in arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'deleted_at',
-        'shoppingList',
+    protected $visible = [
+        'id',
+        'product_name',
+        'unit_name',
+        'creator_email',
+        'amount',
+        'done',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -38,6 +44,11 @@ class Item extends Model
      * @var array
      */
     protected $casts = [
+        'owner_email' => 'string',
+        'shopping_list_id' => 'integer',
+        'product_name' => 'string',
+        'unit_name' => 'string',
+        'creator_email' => 'string',
         'amount' => 'integer',
         'done' => 'boolean',
     ];
@@ -52,31 +63,13 @@ class Item extends Model
         return $this->belongsTo('App\Models\ShoppingList');
     }
 
-    public function product()
-    {
-        return $this->belongsTo('App\Models\Product');
-    }
-
-    public function unit()
-    {
-        return $this->belongsTo('App\Models\Unit');
-    }
-
-    public function user()
+    /**
+     * Get shopping list corresponding to this item
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');
-    }
-
-    public function format()
-    {
-        return [
-            'id' => $this->id,
-            'shopping_list_id' => $this->shopping_list_id,
-            'product' => $this->product,
-            'unit' => $this->unit,
-            'user' => $this->user,
-            'amount' => $this->amount,
-            'done' => $this->done,
-        ];
     }
 }

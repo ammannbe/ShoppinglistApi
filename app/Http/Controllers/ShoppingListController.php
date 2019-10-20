@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\ShoppingList;
-use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\ShoppingList\Store;
 use App\Http\Requests\ShoppingList\Update;
@@ -32,12 +30,10 @@ class ShoppingListController extends Controller
     {
         $this->authorize(ShoppingList::class);
         try {
-            $shoppingList = ShoppingList::create($request->only([
-                'name',
-            ]));
-            return response($shoppingList, 200);
+            $shoppingList = ShoppingList::create($request->only(['name']));
+            return response($shoppingList);
         } catch (QueryException $e) {
-            abort(409, __('A shopping list with this name already exists.'));
+            abort(409, __('A resource with this name already exists.'));
         }
     }
 
@@ -50,7 +46,7 @@ class ShoppingListController extends Controller
     public function show(ShoppingList $shoppingList)
     {
         $this->authorize($shoppingList);
-        return response($shoppingList->format());
+        return response($shoppingList);
     }
 
     /**
@@ -64,11 +60,10 @@ class ShoppingListController extends Controller
     {
         $this->authorize($shoppingList);
         try {
-            $shoppingList->update($request->only([
-                'name',
-            ]));
+            $shoppingList->update($request->only(['name']));
+            return response($shoppingList);
         } catch (QueryException $e) {
-            abort(409, __('A shopping list with this name already exists.'));
+            abort(409,  __('A resource with this name already exists.'));
         }
     }
 
@@ -82,20 +77,5 @@ class ShoppingListController extends Controller
     {
         $this->authorize($shoppingList);
         $shoppingList->delete();
-    }
-
-    /**
-     * Display all items of the specified resource.
-     *
-     * @param  \App\Models\ShoppingList  $shoppingList
-     * @return \Illuminate\Http\Response
-     */
-    public function items(ShoppingList $shoppingList)
-    {
-        $this->authorize('view', $shoppingList);
-        $items = $shoppingList->items->map(function ($item) {
-            return $item->format();
-        });
-        return response($items);
     }
 }

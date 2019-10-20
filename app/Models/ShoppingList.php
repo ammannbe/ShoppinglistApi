@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,14 +19,16 @@ class ShoppingList extends Model
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be visible in arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'deleted_at',
-        'pivot',
-        'items',
+    protected $visible = [
+        'id',
+        'name',
+        'owner_email',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -37,6 +38,7 @@ class ShoppingList extends Model
      */
     protected $casts = [
         'name' => 'string',
+        'owner_email' => 'string',
     ];
 
     /**
@@ -46,7 +48,7 @@ class ShoppingList extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->BelongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     /**
@@ -69,14 +71,14 @@ class ShoppingList extends Model
         return $this->hasMany('App\Models\Item');
     }
 
-    public function format()
+    /**
+     * Check if the user has access to the resource
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function hasUser(User $user): bool
     {
-        return [
-            'id' => $this->id,
-            'user' => $this->user,
-            'name' => $this->name,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ];
+        return $this->users()->whereEmail($user->email)->exists();
     }
 }

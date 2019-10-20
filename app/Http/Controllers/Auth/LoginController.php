@@ -25,13 +25,6 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -70,7 +63,7 @@ class LoginController extends Controller
 
             return response($data, 200);
         } else {
-            return response('Benutzername und/oder Passwort ist ungültig.', 401);
+            return response(__('Hinder me? Thou fool. No living man may hinder me!'), 401);
         }
     }
 

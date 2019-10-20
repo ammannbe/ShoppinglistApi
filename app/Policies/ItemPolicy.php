@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Item;
+use App\Models\ShoppingList;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ItemPolicy
@@ -14,11 +15,12 @@ class ItemPolicy
      * Determine whether the user can view any items.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\ShoppingList  $shoppingList
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user, ShoppingList $shoppingList)
     {
-        return true;
+        return $user->can('view', $shoppingList);
     }
 
     /**
@@ -30,18 +32,21 @@ class ItemPolicy
      */
     public function view(User $user, Item $item)
     {
-        return (bool) $item->shoppingList->users()->find($user->id);
+        $shoppingList = $item->shoppingList;
+        return $user->can('view', $shoppingList)
+            && $shoppingList->hasUser($user);
     }
 
     /**
      * Determine whether the user can create items.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\ShoppingList  $shoppingList
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, ShoppingList $shoppingList)
     {
-        return true;
+        return $user->can('view', $shoppingList);
     }
 
     /**
@@ -53,7 +58,9 @@ class ItemPolicy
      */
     public function update(User $user, Item $item)
     {
-        return (bool) $item->shoppingList->users()->find($user->id);
+        $shoppingList = $item->shoppingList;
+        return $user->can('view', $shoppingList)
+            && $shoppingList->hasUser($user);
     }
 
     /**
@@ -65,7 +72,9 @@ class ItemPolicy
      */
     public function delete(User $user, Item $item)
     {
-        return (bool) $item->shoppingList->users()->find($user->id);
+        $shoppingList = $item->shoppingList;
+        return $user->can('view', $shoppingList)
+            && $shoppingList->hasUser($user);
     }
 
     /**
@@ -77,7 +86,9 @@ class ItemPolicy
      */
     public function restore(User $user, Item $item)
     {
-        return (bool) $item->shoppingList->users()->find($user->id);
+        $shoppingList = $item->shoppingList;
+        return $user->can('view', $shoppingList)
+            && $shoppingList->hasUser($user);
     }
 
     /**
@@ -89,6 +100,8 @@ class ItemPolicy
      */
     public function forceDelete(User $user, Item $item)
     {
-        return (bool) $item->shoppingList->users()->find($user->id);
+        $shoppingList = $item->shoppingList;
+        return $user->can('view', $shoppingList)
+            && $shoppingList->hasUser($user);
     }
 }

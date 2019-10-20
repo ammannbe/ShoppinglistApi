@@ -16,8 +16,9 @@ class ShoppingListUserController extends Controller
      */
     public function index(ShoppingList $shoppingList)
     {
-        $this->authorize($shoppingList);
-        return response(['data' => $shoppingList->users]);
+        $this->authorize('view-shares', $shoppingList);
+        $email = auth()->user()->email;
+        return response($shoppingList->users()->exceptUser($email)->pluck('email'));
     }
 
     /**
@@ -29,24 +30,21 @@ class ShoppingListUserController extends Controller
      */
     public function store(UserStore $request, ShoppingList $shoppingList)
     {
-        $this->authorize($shoppingList);
-        $user = User::whereEmail($request->only(['email']))->firstOrFail();
-        $shoppingList->users()->syncWithoutDetaching([$user->id]);
+        $this->authorize('create-shares', $shoppingList);
+        $email = User::exceptUser(auth()->user()->email)->findOrFail($request->email, 'email')->email;
+        $shoppingList->users()->syncWithoutDetaching($email);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\ShoppingList  $shoppingList
-     * @param  \App\Models\User  $user
+     * @param  string  $email
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ShoppingList $shoppingList, User $user)
+    public function destroy(ShoppingList $shoppingList, string $email)
     {
-        $this->authorize($shoppingList);
-        if (auth()->user()->id === $user->id) {
-            abort(404);
-        }
-        $shoppingList->users()->detach($user->id);
+        $this->authorize('delete-shares', $shoppingList);
+        $shoppingList->users()->exceptUser($email)->detach($email);
     }
 }

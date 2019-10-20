@@ -3,17 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Unit extends Model
 {
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $hidden = [
-        'deleted_at',
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        'name',
+        'updated_at',
+        'created_at',
     ];
 
     /**

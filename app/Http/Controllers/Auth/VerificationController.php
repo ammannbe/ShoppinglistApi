@@ -24,13 +24,6 @@ class VerificationController extends Controller
     use VerifiesEmails;
 
     /**
-     * Where to redirect users after verification.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -45,13 +38,13 @@ class VerificationController extends Controller
      * Verify the email address
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $userId
+     * @param  string  $email
      * @return \Illuminate\Http\Response
      */
-    public function verify(Request $request, int $userId)
+    public function verify(Request $request, string $email)
     {
         try {
-            $user = User::findOrFail($userId);
+            $user = User::findOrFail($email);
 
             if (! hash_equals((string) $request->hash, sha1($user->getEmailForVerification()))) {
                 throw new \Exception('Hash does not match.');

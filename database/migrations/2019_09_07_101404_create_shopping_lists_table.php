@@ -15,12 +15,12 @@ class CreateShoppingListsTable extends Migration
     {
         Schema::create('shopping_lists', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
             $table->string('name');
+            $table->string('owner_email');
             $table->timestamps();
 
-            $table->unique(['user_id', 'name']);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unique(['owner_email', 'name']);
+            $table->foreign('owner_email')->references('email')->on('users')->onDelete('cascade');
         });
     }
 
@@ -31,6 +31,6 @@ class CreateShoppingListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lists');
+        Schema::dropIfExists('shopping_lists');
     }
 }

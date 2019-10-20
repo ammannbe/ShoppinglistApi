@@ -30,10 +30,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product)
     {
-        $user_ids = $user->shoppingLists->map(function($shoppingList) {
-            return $shoppingList->user_id;
-        });
-        return Product::global()->orWhere('user_id', $user_ids)->exists();
+        return $product->is_public || $user->isOwnerOf($product);
     }
 
     /**
@@ -56,7 +53,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product)
     {
-        return ($user->id === $product->user_id);
+        return $user->isOwnerOf($product);
     }
 
     /**
@@ -68,7 +65,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product)
     {
-        return ($user->id === $product->user_id);
+        return $user->isOwnerOf($product);
     }
 
     /**
@@ -80,7 +77,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product)
     {
-        return ($user->id === $product->user_id);
+        return $user->isOwnerOf($product);
     }
 
     /**
@@ -92,6 +89,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product)
     {
-        return ($user->id === $product->user_id);
+        return $user->isOwnerOf($product);
     }
 }

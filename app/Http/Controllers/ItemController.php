@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Models\Product;
 use App\Models\ShoppingList;
 use App\Http\Requests\Item\Store;
 use App\Http\Requests\Item\Update;
@@ -11,24 +10,34 @@ use App\Http\Requests\Item\Update;
 class ItemController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @param  \App\Models\ShoppingList  $shoppingList
+     * @return \Illuminate\Http\Response
+     */
+    public function index(ShoppingList $shoppingList)
+    {
+        $this->authorize('viewAny', [Item::class, $shoppingList]);
+        return response($shoppingList->items);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Item\Store  $request
+     * @param  \App\Models\ShoppingList  $shoppingList
      * @return \Illuminate\Http\Response
      */
-    public function store(Store $request)
+    public function store(Store $request, ShoppingList $shoppingList)
     {
-        $this->authorize('view', ShoppingList::find($request->shopping_list_id));
-        $this->authorize('view', Product::find($request->product_id));
-        $this->authorize(Item::class);
-        $item = Item::create($request->only([
-            'shopping_list_id',
-            'product_id',
-            'unit_id',
+        $this->authorize([Item::class, $shoppingList]);
+        $item = $shoppingList->items()->create($request->only([
+            'product_name',
+            'unit_name',
             'amount',
             'done',
         ]));
-        return response($item->format());
+        return response($item);
     }
 
     /**
@@ -40,7 +49,7 @@ class ItemController extends Controller
     public function show(Item $item)
     {
         $this->authorize($item);
-        return response($item->format());
+        return response($item);
     }
 
     /**
@@ -52,20 +61,14 @@ class ItemController extends Controller
      */
     public function update(Update $request, Item $item)
     {
-        if ($request->shopping_list_id) {
-            $this->authorize('view', ShoppingList::find($request->shopping_list_id));
-        }
-        if ($request->product_id) {
-            $this->authorize('view', Product::find($request->product_id));
-        }
         $this->authorize($item);
         $item->update($request->only([
-            'shopping_list_id',
-            'product_id',
-            'unit_id',
+            'product_name',
+            'unit_name',
             'amount',
             'done',
         ]));
+        return response($item);
     }
 
     /**
