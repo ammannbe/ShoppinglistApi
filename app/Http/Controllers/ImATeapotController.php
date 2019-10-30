@@ -12,6 +12,7 @@ class ImATeapotController extends Controller
     public function index()
     {
         $teapot = <<<EOF
+<pre>
                        (
             _           ) )
          _,(_)._        ((      I'm a little teapot
@@ -23,6 +24,7 @@ class ImATeapotController extends Controller
   `. :           :    /           "tip me over and pour me out!"
     `.            :.,'
       `-.________,-'            - Benji
+</pre>
 EOF;
 
         return response($teapot, 418);
