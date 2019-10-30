@@ -19,7 +19,7 @@ class CreateItemsTable extends Migration
             $table->string('product_name');
             $table->string('unit_name')->nullable();
             $table->string('creator_email');
-            $table->decimal('amount', 4, 8)->nullable();
+            $table->decimal('amount', 8, 4)->nullable();
             $table->boolean('done')->default(0);
             $table->timestamps();
 
