@@ -13,7 +13,6 @@ class Item extends Model
      * @var array
      */
     protected $fillable = [
-        'owner_email',
         'shopping_list_id',
         'product_name',
         'unit_name',

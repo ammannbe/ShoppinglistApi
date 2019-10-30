@@ -27,7 +27,7 @@ class Update extends FormRequest
             'shopping_list_id' => ['integer', 'exists:shopping_lists,id'],
             'product_id'       => ['integer', 'exists:products,id'],
             'unit_id'          => ['nullable', 'integer', 'exists:units,id'],
-            'amount'           => ['nullable', 'integer'],
+            'amount'           => ['nullable', 'numeric'],
             'done'             => ['boolean'],
         ];
     }

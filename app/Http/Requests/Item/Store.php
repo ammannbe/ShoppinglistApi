@@ -26,7 +26,7 @@ class Store extends FormRequest
         return [
             'product_name'     => ['required', 'string'],
             'unit_name'        => ['nullable', 'string'],
-            'amount'           => ['nullable', 'integer'],
+            'amount'           => ['nullable', 'numeric'],
             'done'             => ['required', 'boolean'],
         ];
     }
