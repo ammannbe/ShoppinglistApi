@@ -13,23 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('im-a-teapot', function () {
-    $teapot = <<<EOF
-                       (
-            _           ) )
-         _,(_)._        ((      I'm a little teapot
-    ___,(_______).        )       short and stout
-  ,'__.   /       \    /\_        here is my handle
- /,' /  |""|       \  /  /        here is my spout
-| | |   |__|       |,'  /         when I get all steamed up
- \`.|                  /          hear me shout:
-  `. :           :    /           "tip me over and pour me out!"
-    `.            :.,'
-      `-.________,-'            - Benji
-EOF;
-
-    return response($teapot, 418);
-})->name('im-a-teapot');
+Route::get('im-a-teapot', 'ImATeapotController@index')->name('im-a-teapot');
 
 Route::group(['prefix' => 'auth'], function () {
     Route::group(['prefix' => 'login'], function () {
