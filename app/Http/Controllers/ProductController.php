@@ -33,7 +33,7 @@ class ProductController extends Controller
             $product = auth()->user()->products()->create($request->only(['name']));
             return response($product);
         } catch (QueryException $e) {
-            abort(409,  __('A resource list with this name already exists.'));
+            abort(409,  __('A resource with this name already exists.'));
         }
     }
 
@@ -64,7 +64,7 @@ class ProductController extends Controller
         try {
             $product->update($request->only(['name']));
         } catch (QueryException $e) {
-            abort(409,  __('A resource list with this name already exists.'));
+            abort(409,  __('A resource with this name already exists.'));
         }
     }
 
