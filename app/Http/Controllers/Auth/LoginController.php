@@ -50,21 +50,21 @@ class LoginController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
-        if (auth()->attempt($credentials)) {
-            if ($request->remember) {
-                Passport::personalAccessTokensExpireIn(Carbon::now()->addDays(30));
-            }
-            $tokenResult = auth()->user()->createToken('API Token');
-            $data = [
-                'token'      => $tokenResult->accessToken,
-                'expires_at' => $tokenResult->token->expires_at,
-                'issued_at'  => Carbon::now(),
-            ];
-
-            return response($data, 200);
-        } else {
-            return response(__('Hinder me? Thou fool. No living man may hinder me!'), 401);
+        if (!auth()->attempt($credentials)) {
+            return response(__('Credentials incorrect!'), 401);
         }
+
+        if ($request->remember) {
+            Passport::personalAccessTokensExpireIn(Carbon::now()->addDays(30));
+        }
+        $tokenResult = auth()->user()->createToken('API Token');
+        $data = [
+            'token'      => $tokenResult->accessToken,
+            'expires_at' => $tokenResult->token->expires_at,
+            'issued_at'  => Carbon::now(),
+        ];
+
+        return response($data, 200);
     }
 
     /**
