@@ -33,7 +33,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('reset', 'Auth\ResetPasswordController@reset')->name('password.reset');
     });
 
-    Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout');
+    Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout')->middleware('auth:api');
 });
 
 Route::middleware(['auth:api', 'verified'])->group(function () {
