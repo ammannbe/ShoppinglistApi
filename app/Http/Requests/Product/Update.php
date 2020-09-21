@@ -24,7 +24,7 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['string'],
+            'name' => ['string', 'unique:products,name,' . $this->productName],
         ];
     }
 }

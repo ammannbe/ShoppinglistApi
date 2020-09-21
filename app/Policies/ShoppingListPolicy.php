@@ -41,7 +41,7 @@ class ShoppingListPolicy
      */
     public function viewShares(User $user, ShoppingList $shoppingList)
     {
-        return $user->isOwnerOf($shoppingList);
+        return $user->isOwnerOf($shoppingList->owner_email);
     }
 
     /**
@@ -63,7 +63,7 @@ class ShoppingListPolicy
      */
     public function createShares(User $user, ShoppingList $shoppingList)
     {
-        return $user->isOwnerOf($shoppingList);
+        return $user->isOwnerOf($shoppingList->owner_email);
     }
 
     /**
@@ -87,7 +87,7 @@ class ShoppingListPolicy
      */
     public function delete(User $user, ShoppingList $shoppingList)
     {
-        return $user->isOwnerOf($shoppingList);
+        return $user->isOwnerOf($shoppingList->owner_email);
     }
 
     /**
@@ -99,7 +99,7 @@ class ShoppingListPolicy
      */
     public function deleteShares(User $user, ShoppingList $shoppingList)
     {
-        return $user->isOwnerOf($shoppingList);
+        return $user->isOwnerOf($shoppingList->owner_email);
     }
 
     /**
@@ -111,7 +111,7 @@ class ShoppingListPolicy
      */
     public function restore(User $user, ShoppingList $shoppingList)
     {
-        return $user->isOwnerOf($shoppingList);
+        return $user->isOwnerOf($shoppingList->owner_email);
     }
 
     /**
@@ -123,7 +123,7 @@ class ShoppingListPolicy
      */
     public function forceDelete(User $user, ShoppingList $shoppingList)
     {
-        return $user->isOwnerOf($shoppingList);
+        return $user->isOwnerOf($shoppingList->owner_email);
     }
 
     /**
@@ -135,6 +135,6 @@ class ShoppingListPolicy
      */
     public function forceDeleteShares(User $user, ShoppingList $shoppingList)
     {
-        return $user->isOwnerOf($shoppingList);
+        return $user->isOwnerOf($shoppingList->owner_email);
     }
 }

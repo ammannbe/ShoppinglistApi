@@ -11,6 +11,8 @@ class ImATeapotController extends Controller
      */
     public function index()
     {
+        $locale = app()->getLocale();
+
         $teapot = <<<EOF
 <pre>
                        (
@@ -24,6 +26,10 @@ class ImATeapotController extends Controller
   `. :           :    /           "tip me over and pour me out!"
     `.            :.,'
       `-.________,-'            - Benji
+
+
+Some infos:
+    Locale: {$locale}
 </pre>
 EOF;
 

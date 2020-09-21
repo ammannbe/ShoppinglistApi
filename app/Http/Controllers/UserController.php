@@ -19,11 +19,11 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\User\Update  $request
+     * @return void
      */
     public function update(Update $request)
     {
-        return auth()->user()->update($request->only(['email', 'password']));
+        auth()->user()->update($request->validated());
     }
 }

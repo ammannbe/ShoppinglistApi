@@ -12,28 +12,27 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\Product>
      */
     public function index()
     {
         $this->authorize(Product::class);
-        return response(Product::get());
+        return Product::get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Product\Store  $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Models\Product
      */
     public function store(Store $request)
     {
         $this->authorize(Product::class);
         try {
-            $product = auth()->user()->products()->create($request->only(['name']));
-            return response($product);
+            return auth()->user()->products()->create($request->validated());
         } catch (QueryException $e) {
-            abort(409,  __('A resource with this name already exists.'));
+            abort(409, __('A resource with this name already exists.'));
         }
     }
 
@@ -41,13 +40,13 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  string  $productName
-     * @return \Illuminate\Http\Response
+     * @return \App\Models\Product
      */
     public function show(string $productName)
     {
         $product = Product::whereName($productName)->firstOrFail();
         $this->authorize($product);
-        return response($product);
+        return $product;
     }
 
     /**
@@ -55,16 +54,16 @@ class ProductController extends Controller
      *
      * @param  \App\Http\Requests\Product\Update  $request
      * @param  string  $productName
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function update(Update $request, string $productName)
     {
         $product = auth()->user()->products()->whereName('name', $productName)->firstOrFail();
         $this->authorize($product);
         try {
-            $product->update($request->only(['name']));
+            $product->update($request->validated());
         } catch (QueryException $e) {
-            abort(409,  __('A resource with this name already exists.'));
+            abort(409, __('A resource with this name already exists.'));
         }
     }
 
@@ -72,7 +71,7 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  string  $productName
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function destroy(string $productName)
     {

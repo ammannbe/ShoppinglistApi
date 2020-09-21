@@ -1,6 +1,7 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use App\Models\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -15,6 +16,10 @@ use Faker\Generator as Faker;
 | model instances for testing / seeding your application's database.
 |
 */
+
+if (!isset($factory)) {
+    throw new \Exception('Factory is not defined');
+}
 
 $factory->define(User::class, function (Faker $faker) {
     return [

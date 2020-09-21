@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Update extends FormRequest
@@ -24,8 +25,8 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            'email'    => ['email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email'    => ['email', Rule::unique('users')->ignore($this->user)],
+            'password' => ['string', 'min:8', 'confirmed'],
         ];
     }
 }

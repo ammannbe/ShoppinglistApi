@@ -26,13 +26,15 @@ class ShoppingListUserController extends Controller
      *
      * @param  \App\Http\Requests\ShoppingList\UserStore  $request
      * @param  \App\Models\ShoppingList  $shoppingList
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function store(UserStore $request, ShoppingList $shoppingList)
     {
         $this->authorize('create-shares', $shoppingList);
-        $email = User::exceptUser(auth()->user()->email)->findOrFail($request->email, 'email')->email;
-        $shoppingList->users()->syncWithoutDetaching($email);
+        /** @var User $user */
+        $user = User::exceptUser(auth()->user()->email)->findOrFail($request->email, ['email']);
+        $email = $user->email;
+        $shoppingList->users()->syncWithoutDetaching([$email]);
     }
 
     /**
@@ -40,7 +42,7 @@ class ShoppingListUserController extends Controller
      *
      * @param  \App\Models\ShoppingList  $shoppingList
      * @param  string  $email
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function destroy(ShoppingList $shoppingList, string $email)
     {

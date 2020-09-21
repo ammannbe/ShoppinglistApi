@@ -23,7 +23,7 @@ class ShoppingListController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ShoppingList\Store  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Store $request)
@@ -52,7 +52,7 @@ class ShoppingListController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ShoppingList\Update  $request
      * @param  \App\Models\ShoppingList  $shoppingList
      * @return \Illuminate\Http\Response
      */
@@ -63,7 +63,7 @@ class ShoppingListController extends Controller
             $shoppingList->update($request->only(['name']));
             return response($shoppingList);
         } catch (QueryException $e) {
-            abort(409,  __('A resource with this name already exists.'));
+            abort(409, __('A resource with this name already exists.'));
         }
     }
 
@@ -71,7 +71,7 @@ class ShoppingListController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\ShoppingList  $shoppingList
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function destroy(ShoppingList $shoppingList)
     {

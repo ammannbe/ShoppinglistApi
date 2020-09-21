@@ -7,6 +7,29 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * App\Models\ShoppingList
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $owner_email
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Item[] $items
+ * @property-read int|null $items_count
+ * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|ShoppingList newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShoppingList newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShoppingList query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShoppingList whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ShoppingList whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ShoppingList whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ShoppingList whereOwnerEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ShoppingList whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class ShoppingList extends Model
 {
     /**

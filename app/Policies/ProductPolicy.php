@@ -30,7 +30,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product)
     {
-        return $product->is_public || $user->isOwnerOf($product);
+        return $product->is_public || $user->isOwnerOf($product->owner_email);
     }
 
     /**
@@ -53,7 +53,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product)
     {
-        return $user->isOwnerOf($product);
+        return $user->isOwnerOf($product->owner_email);
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product)
     {
-        return $user->isOwnerOf($product);
+        return $user->isOwnerOf($product->owner_email);
     }
 
     /**
@@ -77,7 +77,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product)
     {
-        return $user->isOwnerOf($product);
+        return $user->isOwnerOf($product->owner_email);
     }
 
     /**
@@ -89,6 +89,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product)
     {
-        return $user->isOwnerOf($product);
+        return $user->isOwnerOf($product->owner_email);
     }
 }

@@ -5,6 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * App\Models\Product
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $owner_email
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $is_public
+ * @method static Builder|Product newModelQuery()
+ * @method static Builder|Product newQuery()
+ * @method static Builder|Product personalOrPublic(\App\Models\User $user)
+ * @method static Builder|Product query()
+ * @method static Builder|Product whereCreatedAt($value)
+ * @method static Builder|Product whereId($value)
+ * @method static Builder|Product whereName($value)
+ * @method static Builder|Product whereOwnerEmail($value)
+ * @method static Builder|Product whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Product extends Model
 {
     /**
@@ -51,8 +71,10 @@ class Product extends Model
 
     /**
      * The resource is public (no user owns it).
+     *
+     * @return bool
      */
-    public function getIsPublicAttribute()
+    public function getIsPublicAttribute(): bool
     {
         return $this->attributes['owner_email'] === null;
     }

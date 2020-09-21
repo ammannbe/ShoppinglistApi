@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\Verified;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
 class VerificationController extends Controller
@@ -21,7 +20,16 @@ class VerificationController extends Controller
     |
     */
 
-    use VerifiesEmails;
+    use VerifiesEmails {
+        verify as parentVerify;
+    }
+
+    /**
+     * Where to redirect users after verification.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -30,71 +38,34 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('auth')->except('verify');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
     /**
-     * Verify the email address
+     * Mark the authenticated user's email address as verified.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $email
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function verify(Request $request, string $email)
+    public function verify(Request $request)
     {
-        try {
-            $user = User::findOrFail($email);
+        auth()->loginUsingId($request->route('id'));
 
-            if (! hash_equals((string) $request->hash, sha1($user->getEmailForVerification()))) {
-                throw new \Exception('Hash does not match.');
-            }
-
-            if ($user->hasVerifiedEmail()) {
-                throw new \Exception('Email address is already verified.');
-            }
-
-            if ($user->markEmailAsVerified()) {
-                event(new Verified($request->user()));
-            }
-
-            return response()->view('auth.register.verified', [], 200);
-        } catch (\Exception $e) {
-            \Log::info($e->getMessage());
-            return response()->view('auth.register.verify-failed', [], 400);
-        }
+        return $this->parentVerify($request);
     }
 
     /**
-     * Check if email is verified or not
+     * The user has been verified.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function status(Request $request)
+    protected function verified(Request $request)
     {
-        $verified = false;
-        if ($request->user()->hasVerifiedEmail()) {
-            $verified = true;
-        }
-        return response(['verified' => $verified]);
+        return view('auth.email.verified');
     }
-
-    /**
-     * Resend the email verification notification.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function resend(Request $request)
-    {
-        if (auth()->user()->hasVerifiedEmail()) {
-            return response(['message' => 'Die E-Mail Adresse ist bereits verifiziert'], 422);
-        }
-
-        auth()->user()->sendEmailVerificationNotification();
-
-        return response(['message' => 'Die Verifizierungs E-Mail wurde erneut versendet.']);
-    }
-
 }

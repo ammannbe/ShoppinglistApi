@@ -16,27 +16,20 @@ use Illuminate\Http\Request;
 Route::get('im-a-teapot', 'ImATeapotController@index')->name('im-a-teapot');
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::group(['prefix' => 'login'], function () {
-        Route::post('refresh', 'Auth\LoginController@refresh')->name('auth.refresh')->middleware('auth:api');
-        Route::post('', 'Auth\LoginController@login')->name('auth.login');
+    Route::post('token', 'Auth\LoginController@token');
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('revoke', 'Auth\LoginController@revoke');
     });
 
-    Route::group(['prefix' => 'register'], function () {
-        Route::post('', 'Auth\RegisterController@register')->name('register');
-        Route::get('status', 'Auth\VerificationController@status')->name('verification.status')->middleware('auth:api');
-        Route::post('resend', 'Auth\VerificationController@resend')->name('verification.resend')->middleware('auth:api');
-        Route::get('verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
-    });
+    Route::post('register', 'Auth\RegisterController@register');
+    Route::post('confirm', 'Auth\ConfirmPasswordController@confirm');
 
-    Route::group(['prefix' => 'password'], function () {
-        Route::post('reset-email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.reset-email');
-        Route::post('reset', 'Auth\ResetPasswordController@reset')->name('password.reset');
-    });
-
-    Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout')->middleware('auth:api');
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 });
 
-Route::middleware(['auth:api', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::apiResource('shopping-lists', 'ShoppingListController');
     Route::apiResource('shopping-lists/{shopping_list}/items', 'ItemController')->only(['index', 'store']);
     Route::apiResource('shopping-lists/{shopping_list}/shares', 'ShoppingListUserController')->parameters(['share' => 'email'])->only(['index', 'store', 'destroy']);
