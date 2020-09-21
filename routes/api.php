@@ -16,10 +16,10 @@ use Illuminate\Http\Request;
 Route::get('im-a-teapot', 'ImATeapotController@index')->name('im-a-teapot');
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('token', 'Auth\LoginController@token');
+    Route::post('token', 'Auth\TokenController@store');
 
     Route::middleware(['auth:sanctum'])->group(function () {
-        Route::post('revoke', 'Auth\LoginController@revoke');
+        Route::delete('token', 'Auth\TokenController@destroy');
     });
 
     Route::post('register', 'Auth\RegisterController@register');
