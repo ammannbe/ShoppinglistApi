@@ -17,7 +17,7 @@ class ItemController extends Controller
      */
     public function index(ShoppingList $shoppingList)
     {
-        $this->authorize('viewAny', [Item::class, $shoppingList]);
+        $this->authorize([Item::class, $shoppingList]);
         return $shoppingList->items;
     }
 

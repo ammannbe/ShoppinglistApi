@@ -75,7 +75,7 @@ class ShoppingListPolicy
      */
     public function update(User $user, ShoppingList $shoppingList)
     {
-        return (bool) $user->shoppingLists()->find($shoppingList->id);
+        return $user->shoppingLists()->whereId($shoppingList->id)->exists();
     }
 
     /**
@@ -98,42 +98,6 @@ class ShoppingListPolicy
      * @return mixed
      */
     public function deleteShares(User $user, ShoppingList $shoppingList)
-    {
-        return $user->isOwnerOf($shoppingList->owner_email);
-    }
-
-    /**
-     * Determine whether the user can restore the shopping list.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShoppingList  $shoppingList
-     * @return mixed
-     */
-    public function restore(User $user, ShoppingList $shoppingList)
-    {
-        return $user->isOwnerOf($shoppingList->owner_email);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the shopping list.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShoppingList  $shoppingList
-     * @return mixed
-     */
-    public function forceDelete(User $user, ShoppingList $shoppingList)
-    {
-        return $user->isOwnerOf($shoppingList->owner_email);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the shopping list shares.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ShoppingList  $shoppingList
-     * @return mixed
-     */
-    public function forceDeleteShares(User $user, ShoppingList $shoppingList)
     {
         return $user->isOwnerOf($shoppingList->owner_email);
     }

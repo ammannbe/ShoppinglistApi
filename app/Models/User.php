@@ -28,7 +28,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int|null $shopping_lists_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
- * @method static Builder|User exceptUser($email)
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
  * @method static Builder|User query()
@@ -98,6 +97,16 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'email';
+    }
+
+    /**
      * Get the shopping lists corresponding to this user
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -115,18 +124,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function products(): HasMany
     {
         return $this->hasMany('App\Models\Product', 'owner_email');
-    }
-
-    /**
-     * QueryFilter exclude User by email
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $email
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeExceptUser(Builder $query, string $email): Builder
-    {
-        return $query->where('email', '!=', $email);
     }
 
     /**

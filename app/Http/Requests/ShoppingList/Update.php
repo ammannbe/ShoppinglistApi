@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ShoppingList;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Update extends FormRequest
@@ -13,7 +14,7 @@ class Update extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +25,11 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['string'],
+            'name' => ['string', Rule::unique('products')
+                ->ignore($this->shoppingList)
+                ->where(function ($query) {
+                    return $query->whereOwnerEmail(auth()->id());
+                })],
         ];
     }
 }

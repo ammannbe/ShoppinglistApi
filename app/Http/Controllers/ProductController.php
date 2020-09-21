@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\Product\Store;
 use App\Http\Requests\Product\Update;
-use Illuminate\Database\QueryException;
 
 class ProductController extends Controller
 {
@@ -29,22 +28,17 @@ class ProductController extends Controller
     public function store(Store $request)
     {
         $this->authorize(Product::class);
-        try {
-            return auth()->user()->products()->create($request->validated());
-        } catch (QueryException $e) {
-            abort(409, __('A resource with this name already exists.'));
-        }
+        return auth()->user()->products()->create($request->validated());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  string  $productName
+     * @param  \App\Models\Product  $product
      * @return \App\Models\Product
      */
-    public function show(string $productName)
+    public function show(Product $product)
     {
-        $product = Product::whereName($productName)->firstOrFail();
         $this->authorize($product);
         return $product;
     }
@@ -53,29 +47,23 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\Product\Update  $request
-     * @param  string  $productName
+     * @param  \App\Models\Product  $product
      * @return void
      */
-    public function update(Update $request, string $productName)
+    public function update(Update $request, Product $product)
     {
-        $product = auth()->user()->products()->whereName('name', $productName)->firstOrFail();
         $this->authorize($product);
-        try {
-            $product->update($request->validated());
-        } catch (QueryException $e) {
-            abort(409, __('A resource with this name already exists.'));
-        }
+        $product->update($request->validated());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string  $productName
+     * @param  \App\Models\Product  $product
      * @return void
      */
-    public function destroy(string $productName)
+    public function destroy(Product $product)
     {
-        $product = auth()->user()->products()->whereName('name', $productName)->firstOrFail();
         $this->authorize($product);
         $product->delete();
     }

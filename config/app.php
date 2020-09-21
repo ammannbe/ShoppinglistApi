@@ -116,6 +116,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Log DB Queries
+    |--------------------------------------------------------------------------
+    |
+    | This flag will be used to determine if DB Queries should be logged in
+    | the log file or not. This should not be enabled in production, cause it
+    | will slowing your query time.
+    |
+    */
+
+    'log_queries' => env('LOG_QUERIES', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |
@@ -180,6 +193,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\QueryLogServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
 
     ],

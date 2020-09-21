@@ -67,28 +67,4 @@ class ProductPolicy
     {
         return $user->isOwnerOf($product->owner_email);
     }
-
-    /**
-     * Determine whether the user can restore the product.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Product  $product
-     * @return mixed
-     */
-    public function restore(User $user, Product $product)
-    {
-        return $user->isOwnerOf($product->owner_email);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the product.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Product  $product
-     * @return mixed
-     */
-    public function forceDelete(User $user, Product $product)
-    {
-        return $user->isOwnerOf($product->owner_email);
-    }
 }

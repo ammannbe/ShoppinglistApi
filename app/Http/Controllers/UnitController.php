@@ -9,10 +9,10 @@ class UnitController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\Unit>
      */
     public function index()
     {
-        return response(Unit::get());
+        return Unit::get();
     }
 }

@@ -76,32 +76,4 @@ class ItemPolicy
         return $user->can('view', $shoppingList)
             && $shoppingList->hasUser($user);
     }
-
-    /**
-     * Determine whether the user can restore the item.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Item  $item
-     * @return mixed
-     */
-    public function restore(User $user, Item $item)
-    {
-        $shoppingList = $item->shoppingList;
-        return $user->can('view', $shoppingList)
-            && $shoppingList->hasUser($user);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the item.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Item  $item
-     * @return mixed
-     */
-    public function forceDelete(User $user, Item $item)
-    {
-        $shoppingList = $item->shoppingList;
-        return $user->can('view', $shoppingList)
-            && $shoppingList->hasUser($user);
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Product;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Update extends FormRequest
@@ -13,7 +14,7 @@ class Update extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +25,13 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['string', 'unique:products,name,' . $this->productName],
+            'name' => ['string', Rule::unique('products')
+                ->ignore($this->product)
+                ->where(function ($query) {
+                    return $query
+                        ->whereOwnerEmail(auth()->id())
+                        ->orWhereNull('owner_email');
+                })],
         ];
     }
 }

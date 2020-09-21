@@ -13,10 +13,11 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string|null $owner_email
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $is_public
+ * @property-read bool $is_public
+ * @method static Builder|Product isOwn()
+ * @method static Builder|Product isPublic()
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
- * @method static Builder|Product personalOrPublic(\App\Models\User $user)
  * @method static Builder|Product query()
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereId($value)
@@ -70,6 +71,34 @@ class Product extends Model
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('isOwnOrPublic', function (Builder $query) {
+            return $query->where(function (Builder $q) {
+                return $q->isOwn();
+            })->orWhere(function (Builder $q) {
+                return $q->isPublic();
+            });
+        });
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'name';
+    }
+
+    /**
      * The resource is public (no user owns it).
      *
      * @return bool
@@ -80,18 +109,24 @@ class Product extends Model
     }
 
     /**
-     * QueryFilter for personal or public resources.
+     * Get only the products of the logged in user
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \App\Models\User  $user
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopePersonalOrPublic(Builder $query, User $user): Builder
+    public function scopeIsOwn(Builder $builder): Builder
     {
-        $email = $user->email;
-        return $query->where(function ($q) use ($email) {
-            $q->where('owner_email', $email);
-            $q->orWhere('owner_email', null);
-        });
+        return $builder->whereOwnerEmail(auth()->id());
+    }
+
+    /**
+     * Get only the "public" products
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeIsPublic(Builder $builder): Builder
+    {
+        return $builder->whereNull('owner_email');
     }
 }

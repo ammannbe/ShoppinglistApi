@@ -32,9 +32,9 @@ Route::group(['prefix' => 'auth'], function () {
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::apiResource('shopping-lists', 'ShoppingListController');
     Route::apiResource('shopping-lists/{shopping_list}/items', 'ItemController')->only(['index', 'store']);
-    Route::apiResource('shopping-lists/{shopping_list}/shares', 'ShoppingListUserController')->parameters(['share' => 'email'])->only(['index', 'store', 'destroy']);
+    Route::apiResource('shopping-lists/{shopping_list}/shares', 'ShoppingListUserController')->only(['index', 'store', 'destroy']);
     Route::apiResource('items', 'ItemController')->except(['index', 'store']);
-    Route::apiResource('products', 'ProductController')->parameters(['products' => 'product_name']);
+    Route::apiResource('products', 'ProductController');
     Route::apiResource('units', 'UnitController')->only(['index']);
     Route::patch('user', 'UserController@update')->name('user.update');
     Route::get('user', 'UserController@show')->name('user.show');
