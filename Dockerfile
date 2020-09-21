@@ -5,10 +5,10 @@ RUN apt-get update && apt-get install -y \
     curl gnupg ca-certificates \
     libpng-dev \
     libonig-dev \
-    libxml2-dev &&
-    curl -L https://deb.nodesource.com/setup_12.x | bash &&
-    apt-get update -yq &&
-    apt-get install -yq \
+    libxml2-dev \
+    && curl -L https://deb.nodesource.com/setup_12.x | bash \
+    && apt-get update -yq \
+    && apt-get install -yq \
         dh-autoreconf=19 \
         ruby=1:2.5.* \
         ruby-dev=1:2.5.* \
