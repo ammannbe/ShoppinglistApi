@@ -6,13 +6,11 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    && curl -L https://deb.nodesource.com/setup_12.x | bash \
     && apt-get update -yq \
     && apt-get install -yq \
         dh-autoreconf=19 \
         ruby=1:2.5.* \
-        ruby-dev=1:2.5.* \
-        nodejs
+        ruby-dev=1:2.5.*
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -51,7 +49,6 @@ RUN chmod a+x /usr/local/bin/init-shoppinglist.sh
 
 # Install dependencies
 RUN composer install --optimize-autoloader --no-dev
-RUN npm install
 
 # change ownership of our applications
 RUN chown -R www-data:www-data $APP_HOME
