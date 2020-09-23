@@ -13,7 +13,7 @@ class TokenController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Auth\Token  $request
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function store(Token $request)
     {
@@ -31,10 +31,12 @@ class TokenController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function destroy()
     {
-        auth()->user()->currentAccessToken()->delete();
+        /** @var \Laravel\Sanctum\PersonalAccessToken $token */
+        $token = auth()->user()->currentAccessToken();
+        $token->delete();
     }
 }

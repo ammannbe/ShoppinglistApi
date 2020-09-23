@@ -9,11 +9,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \App\Models\User
      */
     public function show()
     {
-        return response(auth()->user());
+        return auth()->user();
     }
 
     /**
