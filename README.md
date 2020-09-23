@@ -24,38 +24,60 @@ git clone https://git.narrenhaus.ch/Narrenhaus/ShoppingListApi.git
 -   LAMP Stack (only on production)
 -   Requirements for [laravel](https://laravel.com/docs)
 -   Composer
+-   NPM
 
 ### Installing
 
+It's recommended to install and update this software with docker/docker-compose.
+See [here](docker/README.md) for more information.
+
+Alternatively or for development purposes you can make a manual installation on any linux/unix machine:
+
+#### Manual installation
+
+-   Install composer packages `composer install`
+-   Install NPM packages `npm install`
 -   Copy .env.example to .env and modify it to your needs
 -   Generate an app key `php artisan key:generate`
 -   Migrate the database `php artisan migrate`
--   Install composer dependencies `composer install`
 -   Add following to your crontab:
 
-```
-  0  6  *  *  * www-data   cd /path-to-the-project && php artisan cleanup >> /dev/null 2>&1
+```bash
+  *  *  *  *  *  www-data   cd /path-to-the-project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
+#### Manual development deployment
+
+-   If not already done, [install](#installation) everything
 -   Run the server `php artisan serve`
+-   Watch for style and js changes: `npm run watch`
 
-## Deployment
+#### Manual production deployment
 
--   Install the software as above described
--   Optimize autoloader `composer install --optimize-autoloader --no-dev`
--   Enable caching
+-   If not already done, [install](#installation) everything
+-   Optimize composer autoload `composer install --optimize-autoloader --no-dev`
+-   Enable caching:
 
-```
+```bash
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
 
+-   Optimize npm packages: `npm run prod`
+
 ## Update
 
 -   Get the latest source (see [Getting Started](#getting-started))
+-   Check `.env.examples` for changes
+-   Optimize composer autoload `composer install`
+-   Install NPM packages `npm install`
 -   Migrate the database `php artisan migrate`
--   Install composer packages `composer install`
+-   Follow [Development deployment](#development-deployment) or [Production deployment](#production-deployment)
+
+## Translations
+
+Translations are manually managed in `resources/lang/*.json` and `resources/lang/*/*.php`.
 
 ## IDE helpers
 
@@ -82,6 +104,10 @@ After that, you should run the commands from [Testing / Code Quality](#testing-/
 -   [nunomaduro/larastan](https://github.com/nunomaduro/larastan) - Adds static analysis to Laravel improving developer productivity and code quality
 -   [stechstudio/Laravel-PHP-CS-Fixer](https://github.com/stechstudio/Laravel-PHP-CS-Fixer) - Artisan Command for FriendsOfPHP/PHP-CS_Fixer
 -   [laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper) - Laravel IDE Helper
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Authors
 
